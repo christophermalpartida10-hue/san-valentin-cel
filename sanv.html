@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Quieres ser mi San Valentín? 💕</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  background:radial-gradient(circle at top,#200020,#000);
+  font-family:'Segoe UI',sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+
+/* ⭐ ESTRELLAS */
+.star{
+  position:fixed;
+  background:white;
+  border-radius:50%;
+  animation:twinkle 2s infinite alternate;
+}
+@keyframes twinkle{
+  from{opacity:.3;}
+  to{opacity:1;}
+}
+
+/* 💌 SOBRE */
+.envelope{
+  position:absolute;
+  width:340px;
+  height:220px;
+  background:#e91e63;
+  border-radius:12px;
+  cursor:pointer;
+  z-index:10;
+  box-shadow:0 15px 35px rgba(0,0,0,.6);
+  transition:all 1s ease;
+}
+
+.flap{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:#ff4f8b;
+  clip-path:polygon(0 0,100% 0,50% 60%);
+  transform-origin:top;
+  transition:1s;
+}
+
+.envelope.open .flap{
+  transform:rotateX(180deg);
+}
+
+.envelope.hide{
+  opacity:0;
+  transform:scale(.7);
+  pointer-events:none;
+}
+
+.envelope-text{
+  position:absolute;
+  width:100%;
+  text-align:center;
+  top:90px;
+  color:white;
+  font-size:1.3rem;
+}
+
+/* 💖 TARJETA */
+.card{
+  width:90%;
+  max-width:520px;
+  border-radius:25px;
+  padding:40px 25px;
+  text-align:center;
+  position:relative;
+  opacity:0;
+  transform:scale(.8);
+  transition:1.2s ease;
+  z-index:5;
+
+  background:
+    linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)),
+    url("https://img.pikbest.com/backgrounds/20250110/delicate-purple-flower-frame-watercolor-vector-set-featuring-flora-wreath_11366852.jpg!bwr800");
+  background-size:cover;
+  background-position:center;
+
+  box-shadow:0 25px 60px rgba(255,105,180,.4);
+}
+
+.card.show{
+  opacity:1;
+  transform:scale(1);
+}
+
+.photo-frame{
+  width:360px;
+  height:360px;
+  margin:0 auto 20px;
+  border-radius:50%;
+  border:8px solid pink;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(233,30,99,.4);
+}
+
+.main-photo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+}
+
+h1{
+  font-family:'Great Vibes',cursive;
+  color:#e91e63;
+  font-size:3rem;
+}
+
+.subtitle{
+  font-family:'Dancing Script',cursive;
+  font-size:2rem;
+  color:#f06292;
+}
+
+.date-place{
+  color:#c2185b;
+  font-weight:bold;
+  margin:15px 0;
+}
+
+#countdown{
+  margin:15px 0;
+  font-weight:bold;
+  color:#e91e63;
+}
+
+button{
+  margin:10px;
+  padding:14px 35px;
+  border:none;
+  border-radius:40px;
+  font-size:1.1rem;
+  cursor:pointer;
+}
+
+#yesBtn{background:#e91e63;color:white;}
+#noBtn{background:#bbb;color:white;}
+
+/* 💕 CORAZONES */
+.heart{
+  position:fixed;
+  top:-10px;
+  font-size:25px;
+  animation:fall linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(110vh);opacity:0;}
+}
+
+/* 🎆 FUEGOS */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  pointer-events:none;
+}
+
+/* 🎬 FINAL */
+.final{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:'Great Vibes',cursive;
+  font-size:3rem;
+  color:white;
+  opacity:0;
+  pointer-events:none;
+  transition:2s; 
+  z-index:9999;
+}
+.final.show{opacity:1;}
+
+/* 📱 RESPONSIVE PARA CELULAR */
+@media (max-width: 600px){
+
+  .card{
+    width:95%;
+    padding:25px 15px;
+  }
+
+  .photo-frame{
+    width:220px;
+    height:220px;
+  }
+
+  h1{
+    font-size:2.2rem;
+  }
+
+  .subtitle{
+    font-size:1.5rem;
+  }
+
+  .date-place{
+    font-size:0.95rem;
+  }
+
+  button{
+    padding:12px 20px;
+    font-size:1rem;
+  }
+
+  .final{
+    font-size:1.8rem;
+    padding:20px;
+    text-align:center;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="envelope" id="envelope">
+  <div class="flap"></div>
+  <div class="envelope-text">💌 Abrir carta</div>
+</div>
+
+<canvas id="fireworks"></canvas>
+<div class="final" id="final">
+  <div>
+    Sabía que aceptarías jejeje 💕<br>
+    Hace un año por estas fechas estuvimos en Huancayo 💕<br>
+    Iniciando una aventura que nunca quiero que acabe 💖<br>
+    Gracias por hacer mi vida más bonita 💖<br>
+    Te amo muchísimo bonita 💌
+  </div>
+</div>
+<div class="card" id="card">
+
+<div class="photo-frame">
+<img src="https://i.imgur.com/74UyQtE.jpeg" class="main-photo">
+</div>
+
+<h1>¡Hola mi amor!</h1>
+<p class="subtitle">¿Quieres ser mi San Valentín? 💘</p>
+
+<p>Este 14 y 15 de febrero quiero pasar contigo momentos inolvidables 💕</p>
+
+<div class="date-place">
+📅 14 de febrero de 2026<br>
+🕖 Toda la vida si quieres 💖 <br>
+📍 ¿Nos vamos de viaje? ✈️
+</div>
+
+<div id="countdown"></div>
+
+<button id="yesBtn">¡SÍ! 💖</button>
+<button id="noBtn">No 😔</button>
+
+<div style="margin-top:20px;font-style:italic;">
+Con amor Christopher 💌
+</div>
+
+</div>
+
+<script>
+
+/* ⭐ estrellas */
+for(let i=0;i<120;i++){
+let s=document.createElement("div");
+s.className="star";
+s.style.width=s.style.height=Math.random()*3+"px";
+s.style.top=Math.random()*100+"vh";
+s.style.left=Math.random()*100+"vw";
+document.body.appendChild(s);
+}
+
+/* 💌 abrir carta */
+const envelope=document.getElementById("envelope");
+const card=document.getElementById("card");
+
+envelope.onclick=()=>{
+envelope.classList.add("open");
+
+setTimeout(()=>{
+envelope.classList.add("hide");
+card.classList.add("show");
+},900);
+};
+
+/* 💕 corazones */
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="💖";
+h.style.left=Math.random()*100+"vw";
+h.style.animationDuration=(Math.random()*3+4)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},500);
+
+/* ⏳ contador */
+const target=new Date("February 14, 2026 19:00:00").getTime();
+const cd=document.getElementById("countdown");
+
+function updateCountdown(){
+let now=new Date().getTime();
+let diff=target-now;
+
+if(diff<=0){
+cd.innerHTML="💕 ¡Es hoy! 💕";
+return;
+}
+
+let d=Math.floor(diff/(1000*60*60*24));
+let h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+let m=Math.floor((diff%(1000*60*60))/(1000*60));
+let s=Math.floor((diff%(1000*60))/1000);
+
+cd.innerHTML=`Faltan 💖 ${d}d ${h}h ${m}m ${s}s`;
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+/* 😅 botón NO limitado dentro de la tarjeta */
+const noBtn=document.getElementById("noBtn");
+
+noBtn.onmouseover=()=>{
+const cardRect = card.getBoundingClientRect();
+
+const maxX = cardRect.width - noBtn.offsetWidth - 20;
+const maxY = cardRect.height - noBtn.offsetHeight - 20;
+
+const x = Math.random() * maxX;
+const y = Math.random() * maxY;
+
+noBtn.style.position="absolute";
+noBtn.style.left = x + "px";
+noBtn.style.top = y + "px";
+};
+
+/* 🎆 fuegos artificiales */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+
+function boom(){
+let x=Math.random()*canvas.width;
+let y=Math.random()*canvas.height/2;
+
+for(let i=0;i<450;i++){
+particles.push({
+x,y,
+dx:(Math.random()-.5)*20,
+dy:(Math.random()-.5)*20,
+life:120
+});
+}
+}
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+particles.forEach((p,i)=>{
+p.x+=p.dx;
+p.y+=p.dy;
+p.life--;
+ctx.fillStyle="pink";
+ctx.beginPath();
+ctx.arc(p.x,p.y,5,0,Math.PI*2);
+ctx.fill();
+if(p.life<=0)particles.splice(i,1);
+});
+requestAnimationFrame(animate);
+}
+animate();
+
+/* 💖 botón SÍ (mensaje inmediato) */
+document.getElementById("yesBtn").onclick=()=>{
+document.getElementById("final").classList.add("show");
+
+for(let i=0;i<7;i++){
+setTimeout(boom,i*350);
+}
+};
+
+</script>
+
+
+
+</body>
+</html>
+
+
